@@ -1,4 +1,4 @@
-// creating an array and passing the number, questions, options, and answers
+// List of questions in an array and passing the questions, options, and answers
 var poolQuestions = [
   q1 = {
     question: "A page designed in HTML is called _____",
@@ -80,9 +80,7 @@ var poolQuestions = [
       "All the answers are true"
     ]
   }
-  // you can uncomment the below codes and make duplicate as more as you want to add question
-  // but remember you need to give the numb value serialize like 1,2,3,5,6,7,8,9.....
-
+  // template questions
   // numb# = {
   //   question: "Your Question is Here",
   //   answer: "Correct answer of the question is here",
@@ -94,5 +92,7 @@ var poolQuestions = [
   //   ]
   // },
 
-]// Store the object
+]
+
+// Store array json to localstorage on load
 localStorage.poolQuestionsData = JSON.stringify(poolQuestions);

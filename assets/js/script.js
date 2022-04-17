@@ -27,22 +27,43 @@ var randomQuestions;
 var quizItem;
 var answer_result;
 
-var timer = null;
+var timer;
 var sec = 100;
 
-// Show info box prompt 
-function infoPrompt() {
+// class ScoreBoard {
+//     constructor(json) {
+//     Object.assign(this, json);
+//     }
+// }
+
+// const sb = new ScoreBoard({
+//     initials: "KL",
+//     score: 40
+// });
+
+// console.log("before" + sb)
+
+// sb.initials = 'GF';
+// sb.score = 21;
+
+// console.log("after" + sb)
+
+// storeData('scoreboard', sb);
+
+// var sbData = readData('scoreboard');
+
+// var sample = [{"initials":"KL", "score":30,},{"initials":"JK", "score":40,}];
+
+
+// Start Quiz button
+start_btn.onclick = ()=>{
+    // Show info box prompt 
+
     info_box.classList.add("activeInfo"); //show info box
-    // highscore = localStorage.getItem('highscore');
-    // console.log("*************highscore: " + highscore);
-    // highscore = JSON.parse(localStorage.getItem("highscore")); 
 
     // Update high score from local storage
     updateHighScoreCache();
 }
-
-// Run infoPrompt on page load
-window.onload = infoPrompt;
 
 // High score quiz button 
 highscore_btn.onclick = ()=>{
@@ -50,7 +71,6 @@ highscore_btn.onclick = ()=>{
     restart_quiz.remove();
     quit_quiz.textContent = 'Close';
     result_title.textContent = 'High Scores';
-    // score_text.innerHTML += "Here is some more data appended";
 
     // create ol element and set the attributes.
     var ol = document.createElement('ol');
@@ -63,18 +83,7 @@ highscore_btn.onclick = ()=>{
         ol.appendChild(li);     // append li to ol.
     }
     score_text.appendChild(ol);       // add list to the container.
-
-    
     result_box.classList.add("activeResult"); //show result box
-    // const scoreText = result_box.querySelector(".score_text");
-
-    // let scoreTag = '<span>Your score <p>'+ userScore +'</p></span>';
-    // scoreText.innerHTML = scoreTag;  //adding new span tag inside score_Text
-    // console.log("scoreText.innerHTML: " + scoreText.innerHTML);
-    
-    // // Add user score to local storage for high score
-
-    // localStorage.setItem('highscore', str); 
 }
 
 // if continueQuiz button clicked
@@ -82,55 +91,17 @@ continue_btn.onclick = ()=>{
     info_box.classList.remove("activeInfo"); //hide info box
     result_box.classList.remove("activeResult"); //hide result box
     quiz_box.classList.add("activeQuiz"); //show quiz box
-    // showQuestions(0); //calling showQestions function
-    // queCounter(1); //passing 1 parameter to queCounter
-    // startTimer(15); //calling startTimer function
-    // startTimerLine(0); //calling startTimerLine function
     que_count = 0;
     quiz_counter = 0;
     widthValue = 0;
     var cachedQuestions = shuffle(JSON.parse(localStorage.poolQuestionsData));
     showQuestions(quiz_counter, cachedQuestions); //calling showQestions function
-    // clearInterval(counter); //clear counter
-    // clearInterval(counterLine); //clear counterLine
     startTimer(); 
-}
-
-
-start_btn.onclick = ()=>{
-    quiz_box.classList.add("activeQuiz"); //show quiz box
-    result_box.classList.remove("activeResult"); //hide result box
-    que_count = 0;
-    quiz_counter = 0;
-    widthValue = 0;
-
-    // Read the object
-    var cachedQuestions = shuffle(JSON.parse(localStorage.poolQuestionsData));
-
-    showQuestions(quiz_counter, cachedQuestions); //calling showQestions function
-    clearInterval(counter); //clear counter
-    clearInterval(counterLine); //clear counterLine
-    startTimer(); 
-    timeText.textContent = "Score"; //change the text of timeText to Time Left
 }
 
 // if restartQuiz button clicked
 restart_quiz.onclick = ()=>{
     console.log("************restart was clicked!");
-    
-
-    // // Check if element exists.
-    // try {
-    //     let submit_form = document.querySelector(".submit");
-    //     submit_btn.disabled = false;
-    //     if (typeof(submit_form) != 'undefined'){
-    //         submit_form.remove();
-    //         console.log("********remove!");
-    //     }
-    // } catch (error) {
-    //     console.log("Failed to Remove! " + error);
-    // }
-    
 
     info_box.classList.remove("activeInfo"); //hide info box
     result_box.classList.remove("activeResult"); //hide result box
@@ -149,7 +120,6 @@ restart_quiz.onclick = ()=>{
 // if quitQuiz button clicked
 quit_quiz.onclick = ()=>{
     window.location.reload(); //reload the current window
-    // localStorage.clear();
 }
 
 const next_btn = document.querySelector("footer .next_btn");
@@ -180,14 +150,24 @@ function showQuestions(quiz_counter, listQuestions){
         option[i].setAttribute("onclick", "optionSelected(this)");
     }
     quiz_counter++;
+    
+    // if (sec < 0) {
+    //     clearInterval(timer);
+    //     alert("Time is up!")
+    // }
+    if (sec < 0) {
+        userScore = 0;
+        clearInterval(timer);
+        console.log("userScore: " + userScore);
+        timeCount.textContent = 0;
+        showResult();
+        return;
+    }
 }
-// creating the new div tags which for icons
-// let tickIconTag = '<div class="icon tick"><i class="fas fa-check"></i></div>';
-// let crossIconTag = '<div class="icon cross"><i class="fas fa-times"></i></div>';
 
 //if user clicked on option
 function optionSelected(answer){
-    clearInterval(counter); //clear counter
+    // clearInterval(counter); //clear counter
     // clearInterval(counterLine); //clear counterLine
     let userAns = answer.textContent; //getting user selected option
     // let correcAns = randomQuestions[quiz_counter].answer; //getting correct answer from array
@@ -206,7 +186,7 @@ function optionSelected(answer){
         
     } else {
         console.log("Wrong Answer");
-        sec -= 20;
+        sec -= 10;
 
         bottom_ques_result.innerHTML = "Wrong Answer";  //adding new span tag inside bottom_ques_result
         bottom_ques_result.classList.add("incorrect"); //adding red color to correct selected option
@@ -223,13 +203,19 @@ function optionSelected(answer){
     else {
         console.log("No more questions in array: " + tempArray);
         userScore = sec;
-        clearInterval(timer);
         console.log("userScore: " + userScore);
         timeCount.textContent = 0;
         showResult();
     }
-    
 
+    if (sec < 0) {
+        userScore = 0;
+        clearInterval(timer);
+        console.log("userScore: " + userScore);
+        timeCount.textContent = 0;
+        showResult();
+        return;
+    }
 }
 
 function showResult(){
@@ -242,8 +228,6 @@ function showResult(){
     scoreText.innerHTML = scoreTag;  //adding new span tag inside score_Text
     console.log("scoreText.innerHTML: " + scoreText.innerHTML);
     
-
-
     let submit_form = document.querySelector("#form") || null;
     console.log("***********elementExist: " + submit_form);
 
@@ -276,16 +260,15 @@ function showResult(){
 function submitInitials(){
     let submit_btn = document.querySelector("#submit_btn");
     submit_btn.disabled = true;
-    let textData = document.querySelector("#initials_text").value;
+    let textData = document.querySelector("#initials_text").value || null;
+    console.log("+++++++***********textData: " + textData);
+    if (textData == null || typeof textData === 'undefined'){
+        textData = 'NaN';
+        console.log("+++++++*********** not defined: " + textData);
+    }
 
     let addUserScore = `${textData} - ${userScore}`;
-
-    console.log("***********userScore: " + userScore);
-    console.log("***********addUserScore: " + addUserScore);
-
     highscore = updateHighScoreCache(addUserScore);
-
-    console.log("***********highscore: " + highscore);
 }
 
 function updateHighScoreCache(AddHighScore){
@@ -308,6 +291,8 @@ function updateHighScoreCache(AddHighScore){
 
     // Store data into local storage
     storeData(keyInput, highscore);
+
+
 
     console.log("**************highscore: " + highscore);
 }
