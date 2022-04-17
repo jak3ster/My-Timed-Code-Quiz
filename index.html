@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Timed Code Quiz</title>
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+    
+    <!-- Start quiz button -->
+    <div class="start_btn"><button>Start Quiz</button></div>
+
+    <!-- Info box -->
+    <div class="info_box">
+        <div class="info-title"><span>Coding Quiz Challenge</span></div>
+        <div class="info-list">
+            <div class="info">Try to answer the following code-related questions within the time limit. 
+                Keep in mind that incorrect answers will penalize your score time by <span>10 seconds</span> 
+                per each question!
+            </div>
+
+        </div>
+        <div class="buttons">
+            <button class="highscore">High Score</button>
+            <button class="restart">Continue</button>
+        </div>
+    </div>
+
+    <!-- Quiz box -->
+    <div class="quiz_box">
+        <header>
+            <div class="title">Timed Code Quiz</div>
+            <div class="timer">
+                <div class="time_left_txt">Score</div>
+                <div class="timer_sec">--</div>
+            </div>
+        </header>
+        <section>
+            <div class="que_text">
+                <!-- Insert question from javascript -->
+            </div>
+            <div class="option_list">
+                <!-- Insert options from javascript -->
+            </div>
+        </section>
+
+        <!-- Footer quiz box -->
+        <footer>
+            <div class="result_que">
+            </div>
+        </footer>
+    </div>
+
+    <!-- Result box -->
+    <div class="result_box">
+        <div class="result_title">You've completed the Quiz!</div>
+        <div class="score_text">
+            <!-- Use for end-of-quiz score and high score result from javascript -->
+        </div>
+        <div class="buttons" id="results_btn">
+            <button class="restart">Replay Quiz</button>
+            <button class="quit">Quit Quiz</button>
+        </div>
+    </div>
+
+    <!-- Data of the questions and options in javascript file -->
+    <script src="./assets/js/data.js"></script>
+
+    <!-- Inside this JavaScript file I've coded all Quiz Codes -->
+    <script src="./assets/js/script.js"></script>
+
+</body>
+</html>
+</html>
