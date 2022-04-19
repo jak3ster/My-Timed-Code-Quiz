@@ -165,7 +165,6 @@ body{
     background: #007bff;
 }
 
-.start_btn,
 .info_box,
 .quiz_box,
 .result_box{
@@ -184,18 +183,6 @@ body{
     z-index: 5;
     pointer-events: auto;
     transform: translate(-50%, -50%) scale(1);
-}
-
-.start_btn button{
-    font-size: 25px;
-    font-weight: 500;
-    color: black;
-    padding: 15px 30px;
-    outline: none;
-    border: none;
-    border-radius: 5px;
-    background: #fff;
-    cursor: pointer;
 }
 
 .info_box{
@@ -317,14 +304,6 @@ body{
     user-select: none;
 }
 
-/* .quiz_box header .time_line{
-    position: absolute;
-    bottom: 0px;
-    left: 0px;
-    height: 3px;
-    background: #007bff;
-} */
-
 section{
     padding: 25px 30px 20px 30px;
     background: #fff;
@@ -370,12 +349,6 @@ footer.correct{
     border: 1px solid #c3e6cb;
 }
 
-/* section .option_list .option.incorrect{
-    color: #721c24;
-    background: #f8d7da;
-    border: 1px solid #f5c6cb;
-} */
-
 section .option_list .option.disabled{
     pointer-events: none;
 }
@@ -391,17 +364,6 @@ section .option_list .option .icon{
     transition: all 0.3s ease;
     line-height: 24px;
 }
-/* .option_list .option .icon.tick{
-    color: #23903c;
-    border-color: #23903c;
-    background: #d4edda;
-} */
-
-/* .option_list .option .icon.cross{
-    color: #a42834;
-    background: #f8d7da;
-    border-color: #a42834;
-} */
 
 footer{
     height: 60px;

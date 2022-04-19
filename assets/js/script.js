@@ -1,8 +1,8 @@
 // Elements from tags
-const start_btn = document.querySelector(".start_btn button");
+// const start_btn = document.querySelector(".start_btn button");
 const info_box = document.querySelector(".info_box");
 const highscore_btn = info_box.querySelector(".buttons .highscore");
-const continue_btn = info_box.querySelector(".buttons .restart");
+const start_btn = info_box.querySelector(".buttons .restart");
 const quiz_box = document.querySelector(".quiz_box");
 const result_box = document.querySelector(".result_box");
 const score_text = document.querySelector(".score_text");
@@ -30,45 +30,27 @@ var answer_result;
 var timer;
 var sec = 100;
 
-// class ScoreBoard {
-//     constructor(json) {
-//     Object.assign(this, json);
-//     }
-// }
-
-// const sb = new ScoreBoard({
-//     initials: "KL",
-//     score: 40
-// });
-
-// console.log("before" + sb)
-
-// sb.initials = 'GF';
-// sb.score = 21;
-
-// console.log("after" + sb)
-
-// storeData('scoreboard', sb);
-
-// var sbData = readData('scoreboard');
-
-// var sample = [{"initials":"KL", "score":30,},{"initials":"JK", "score":40,}];
-
-
-// Start Quiz button
-start_btn.onclick = ()=>{
-    // Show info box prompt 
-
+// Show info box prompt 
+function infoPrompt() {
     info_box.classList.add("activeInfo"); //show info box
-
-    // Update high score from local storage
     updateHighScoreCache();
 }
+
+// Run infoPrompt on page load
+window.onload = infoPrompt;
+
+// Start Quiz button
+// start_btn.onclick = ()=>{
+//     // Show info box prompt 
+//     info_box.classList.add("activeInfo"); //show info box
+
+//     // Update high score from local storage
+//     updateHighScoreCache();
+// }
 
 // High score quiz button 
 highscore_btn.onclick = ()=>{
     info_box.classList.remove("activeInfo"); //hide info box
-    // restart_btn.remove(); //hide restart_btn
     quit_quiz.textContent = 'Close';
     restart_btn.textContent = 'Clear Scores';
     result_title.textContent = 'High Scores';
@@ -87,12 +69,10 @@ highscore_btn.onclick = ()=>{
     result_box.classList.add("activeResult"); //show result box
 
     restart_btn.setAttribute("onclick", "clearHighScore()");
-
-
 }
 
-// if continueQuiz button clicked
-continue_btn.onclick = ()=>{
+// start quiz button clicked
+start_btn.onclick = ()=>{
     info_box.classList.remove("activeInfo"); //hide info box
     result_box.classList.remove("activeResult"); //hide result box
     quiz_box.classList.add("activeQuiz"); //show quiz box
@@ -138,11 +118,9 @@ var tempArray;
 // getting questions and options from array
 function showQuestions(quiz_counter, listQuestions){
     const que_text = document.querySelector(".que_text");
-
     tempArray = JSON.parse(JSON.stringify(listQuestions));
     quizItem = listQuestions[quiz_counter];
 
-    question_number = quiz_counter + 1;
     //creating a new span and div tag for question and option and passing the value using array index
     let que_tag = '<span>'+ quizItem.question +'</span>';
     let option_tag = '<div class="option"><span>'+ quizItem.options[0] +'</span></div>'
@@ -152,9 +130,9 @@ function showQuestions(quiz_counter, listQuestions){
     que_text.innerHTML = que_tag; //adding new span tag inside que_tag
     option_list.innerHTML = option_tag; //adding new div tag inside option_tag
     
-    const option = option_list.querySelectorAll(".option");
 
     // set onclick attribute to all available options
+    const option = option_list.querySelectorAll(".option");
     for(i=0; i < option.length; i++){
         option[i].setAttribute("onclick", "optionSelected(this)");
     }
@@ -169,33 +147,22 @@ function showQuestions(quiz_counter, listQuestions){
 
 //if user clicked on option
 function optionSelected(answer){
-    // clearInterval(counter); //clear counter
-    // clearInterval(counterLine); //clear counterLine
     let userAns = answer.textContent; //getting user selected option
-    // let correcAns = randomQuestions[quiz_counter].answer; //getting correct answer from array
     let correcAns = quizItem.answer; //getting correct answer from array
     const allOptions = option_list.children.length; //getting all option items
 
     if(userAns == correcAns){ //if user selected option is equal to array's correct answer
-        // userScore += 1; //upgrading score value with 1
-        // answer.classList.add("correct"); //adding green color to correct selected option
-        // answer.insertAdjacentHTML("beforeend", tickIconTag); //adding tick icon to correct selected option
-        console.log("Correct Answer");
-        console.log("Your correct answers = " + userScore);
         bottom_ques_result.innerHTML = "Correct Answer";  //adding new span tag inside bottom_ques_result
         bottom_ques_result.classList.add("correct"); //adding green color to correct selected option
-
-
-        
     } else {
-        console.log("Wrong Answer");
         sec -= 10;
-
         bottom_ques_result.innerHTML = "Wrong Answer";  //adding new span tag inside bottom_ques_result
         bottom_ques_result.classList.add("incorrect"); //adding red color to correct selected option
     }
+    
+    //once user select an option then disabled all options
     for(i=0; i < allOptions; i++){
-        option_list.children[i].classList.add("disabled"); //once user select an option then disabled all options
+        option_list.children[i].classList.add("disabled"); 
     }
 
     tempArray.splice(quiz_counter, 1);
@@ -240,11 +207,10 @@ function showResult(){
         + `<input type="submit" id="submit_btn" value="Submit" onclick="submitInitials();"></div>`;
         form.innerHTML = input_tag;
 
-        // get .div2 element
+        // get element
         var results_btn = document.querySelector('#results_btn');
 
-        // insert before the .div2 element by getting
-        // its parent node
+        // insert before the element by getting its parent node
         results_btn.parentNode.insertBefore(form, results_btn);
     } else {
         let submit_btn = document.querySelector("#submit_btn");
@@ -261,16 +227,13 @@ function submitInitials(){
     let textData = initials_field.value || null;
     initials_field.disabled = true;
     submit_btn.disabled = true;
-    console.log("+++++++***********textData: " + textData);
+
     if (textData == null || typeof textData === 'undefined'){
         textData = 'NaN';
-        console.log("+++++++*********** not defined: " + textData);
     }
 
     let addUserScore = `${textData} - ${userScore}`;
     highscore = updateHighScoreCache(addUserScore);
-
-    
 }
 
 function clearHighScore(){
@@ -279,7 +242,6 @@ function clearHighScore(){
     scoreList.textContent = 'High Score Data Cleared!';
     highscore.length = 0;
     localStorage.clear();
-    // quiz_box.classList.remove("activeQuiz"); //hide quiz box
 }
 
 function updateHighScoreCache(AddHighScore){
@@ -287,7 +249,6 @@ function updateHighScoreCache(AddHighScore){
     
     // If high score is not in local storage
     if (localStorage.getItem(keyInput) != null) {
-        
         // Get high score out of local storage, then add to cache
         highscore = readData(keyInput);
         
@@ -295,17 +256,12 @@ function updateHighScoreCache(AddHighScore){
 
     // Check if AddHighScore is not null
     if (AddHighScore != null){
-        
         // Add user score in cacheData array
         highscore.push(AddHighScore);
     }
 
     // Store data into local storage
     storeData(keyInput, highscore);
-
-
-
-    console.log("**************highscore: " + highscore);
 }
 
 function storeData(key, value){
@@ -337,8 +293,6 @@ function stopTimer(currTime){
     timeCount.textContent = userScore;
     showResult();
 }
-
-
 
 /***************************************************************************************
 *    Title: shuffle source code
