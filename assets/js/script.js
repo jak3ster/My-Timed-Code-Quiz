@@ -1,4 +1,4 @@
-// Required elements from tags
+// Elements from tags
 const start_btn = document.querySelector(".start_btn button");
 const info_box = document.querySelector(".info_box");
 const highscore_btn = info_box.querySelector(".buttons .highscore");
@@ -10,7 +10,7 @@ const option_list = document.querySelector(".option_list");
 const timeText = document.querySelector(".timer .time_left_txt");
 const timeCount = document.querySelector(".timer .timer_sec");
 const result_title = document.querySelector(".result_title");
-const restart_quiz = result_box.querySelector(".buttons .restart");
+const restart_btn = result_box.querySelector(".buttons .restart");
 const quit_quiz = result_box.querySelector(".buttons .quit");
 
 // Variables
@@ -68,14 +68,15 @@ start_btn.onclick = ()=>{
 // High score quiz button 
 highscore_btn.onclick = ()=>{
     info_box.classList.remove("activeInfo"); //hide info box
-    restart_quiz.remove();
+    // restart_btn.remove(); //hide restart_btn
     quit_quiz.textContent = 'Close';
+    restart_btn.textContent = 'Clear Scores';
     result_title.textContent = 'High Scores';
 
     // create ol element and set the attributes.
     var ol = document.createElement('ol');
     ol.setAttribute('style', 'padding: 0; margin: 0;');
-    ol.setAttribute('id', 'theList');
+    ol.setAttribute('id', 'scoreList');
 
     for (i = 0; i <= highscore.length - 1; i++) {
         var li = document.createElement('li');     // create li element.
@@ -84,6 +85,10 @@ highscore_btn.onclick = ()=>{
     }
     score_text.appendChild(ol);       // add list to the container.
     result_box.classList.add("activeResult"); //show result box
+
+    restart_btn.setAttribute("onclick", "clearHighScore()");
+
+
 }
 
 // if continueQuiz button clicked
@@ -100,7 +105,7 @@ continue_btn.onclick = ()=>{
 }
 
 // if restartQuiz button clicked
-restart_quiz.onclick = ()=>{
+restart_btn.onclick = ()=>{
     console.log("************restart was clicked!");
 
     info_box.classList.remove("activeInfo"); //hide info box
@@ -114,6 +119,10 @@ restart_quiz.onclick = ()=>{
 
     var cachedQuestions = shuffle(JSON.parse(localStorage.poolQuestionsData));
     showQuestions(quiz_counter, cachedQuestions); //calling showQestions function
+    let initials_field = document.querySelector("#initials_text");
+    let submit_btn = document.querySelector("#submit_btn");
+    initials_field.disabled = false;
+    submit_btn.disabled = false;
     startTimer(); 
 }
 
@@ -151,16 +160,9 @@ function showQuestions(quiz_counter, listQuestions){
     }
     quiz_counter++;
     
-    // if (sec < 0) {
-    //     clearInterval(timer);
-    //     alert("Time is up!")
-    // }
+    // end quiz if timer runs out
     if (sec < 0) {
-        userScore = 0;
-        clearInterval(timer);
-        console.log("userScore: " + userScore);
-        timeCount.textContent = 0;
-        showResult();
+        stopTimer(sec) // stop timer, change user score and text to zero, show results
         return;
     }
 }
@@ -183,6 +185,7 @@ function optionSelected(answer){
         bottom_ques_result.innerHTML = "Correct Answer";  //adding new span tag inside bottom_ques_result
         bottom_ques_result.classList.add("correct"); //adding green color to correct selected option
 
+
         
     } else {
         console.log("Wrong Answer");
@@ -201,19 +204,12 @@ function optionSelected(answer){
         showQuestions(quiz_counter, tempArray);
     }
     else {
-        console.log("No more questions in array: " + tempArray);
-        userScore = sec;
-        console.log("userScore: " + userScore);
-        timeCount.textContent = 0;
-        showResult();
+        stopTimer(sec) // stop timer, change user score and text to zero, show results
     }
 
+    // end quiz if timer runs out
     if (sec < 0) {
-        userScore = 0;
-        clearInterval(timer);
-        console.log("userScore: " + userScore);
-        timeCount.textContent = 0;
-        showResult();
+        stopTimer(sec) // stop timer, change user score and text to zero, show results
         return;
     }
 }
@@ -257,10 +253,14 @@ function showResult(){
     }
 }
 
+
+
 function submitInitials(){
+    let initials_field = document.querySelector("#initials_text");
     let submit_btn = document.querySelector("#submit_btn");
+    let textData = initials_field.value || null;
+    initials_field.disabled = true;
     submit_btn.disabled = true;
-    let textData = document.querySelector("#initials_text").value || null;
     console.log("+++++++***********textData: " + textData);
     if (textData == null || typeof textData === 'undefined'){
         textData = 'NaN';
@@ -269,6 +269,17 @@ function submitInitials(){
 
     let addUserScore = `${textData} - ${userScore}`;
     highscore = updateHighScoreCache(addUserScore);
+
+    
+}
+
+function clearHighScore(){
+    let scoreList = document.querySelector("#scoreList");
+    scoreList.innerHTML = '';
+    scoreList.textContent = 'High Score Data Cleared!';
+    highscore.length = 0;
+    localStorage.clear();
+    // quiz_box.classList.remove("activeQuiz"); //hide quiz box
 }
 
 function updateHighScoreCache(AddHighScore){
@@ -306,19 +317,26 @@ function readData(key){
 }
 
 function startTimer(){
-    console.log('timer suppose to go')
     timer = setInterval(function(){
         
-        // document.getElementById('timerDisplay').innerHTML='00:'+sec;
         timeCount.textContent = sec; //changing the value of timeCount with time value
         sec--;
-        // if (sec < 0) {
-        //     clearInterval(timer);
-        //     alert("Time is up!")
-        // }
+
+        // end quiz if timer runs out
+        if (sec < 0) {
+            stopTimer(sec) // stop timer, change user score and text to zero, show results
+            return;
+        }
     }, 1000);
 }
 
+// stop timer, change user score and text to zero, show results
+function stopTimer(currTime){
+    userScore = currTime
+    clearInterval(timer);
+    timeCount.textContent = userScore;
+    showResult();
+}
 
 
 
