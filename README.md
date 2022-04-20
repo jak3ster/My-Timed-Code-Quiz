@@ -9,15 +9,35 @@ The timed code quiz will run once the start button is clicked then a timer start
 
 ## Installation
 
-Using the GitHub account, created a repository and project and pushed the homework files to the repository folder
-In GitHub, navigated to jak3ster.github.io repository and click Settings.
-Then within Settings, navigate to the Source section within the Github Pages section. 
-From the dropdown menu, select master branch and then click Save.
-
-Using the link at https://jak3ster.github.io/My-Timed-Code-Quiz/
+1. Download or clone repository
+2. Open the main page (index.html) on your browser to view webpage
+3. Use a text editor to view all coding, Visual Studio Code (recommended editor)
 
 ## Usage
 
-Screenshots added.
+1. Click "Start Quiz"
+* Timer on the top right will start to run
+* Total time is 100 second with 8 questions in total
+2. A series of questions are presented with multiple choice answers
+* If the question is answered wrong, 10 seconds will be deducted to the timer
+* If the question is answered correctly, will add 1 to the score
+* After a question is answered, it will show on the bottom whether it is answered correctly or wrong. If wrong, will also show the correct answer.
+3. When all questions are answered or the timer reaches 0, game is over
+4. When game is over, the user can enter initial and score, click "Submit" to save to high scores to local storage
+5. Click on "High Scores" button to view all current high scores or "Clear Scores" to clear saved scores
+6. The user then will have the option to click on "Replay Quiz" to start quiz again
 
-![alt text](./assets/images/homework4-screenshot.png)
+## Features
+* HTML
+* CSS
+* JavaScript
+* Bootstrap
+
+## Demo
+
+![alt text](./assets/images/my-timed-code-quiz-demo.gif)
+
+## Website & Repository
+
+Deployed Link: https://jak3ster.github.io/My-Timed-Code-Quiz/
+Github Repository: https://github.com/jak3ster/My-Timed-Code-Quiz
