@@ -39,5 +39,5 @@ The timed code quiz will run once the start button is clicked then a timer start
 
 ## Website & Repository
 
-Deployed Link: https://jak3ster.github.io/My-Timed-Code-Quiz/
-Github Repository: https://github.com/jak3ster/My-Timed-Code-Quiz
+* Deployed Link: https://jak3ster.github.io/My-Timed-Code-Quiz/
+* Github Repository: https://github.com/jak3ster/My-Timed-Code-Quiz
